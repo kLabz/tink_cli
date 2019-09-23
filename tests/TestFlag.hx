@@ -10,7 +10,7 @@ using tink.CoreApi;
 @:asserts
 class TestFlag {
 	public function new() {}
-	
+
 	@:variant('Flag' (['--name', 'myname', 'myarg'], 'myname', 'run myarg'))
 	@:variant('Alias' (['-n', 'myname', 'myarg'], 'myname', 'run myarg'))
 	@:variant('Argument before Flag' (['myarg', '--name', 'myname'], 'myname', 'run myarg'))
@@ -26,7 +26,7 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
+
 	@:variant('Renamed' (['--another-name', 'mypath', 'myarg'], 'mypath', 'run myarg'))
 	@:variant('Renamed Alias' (['-a', 'mypath', 'myarg'], 'mypath', 'run myarg'))
 	public function renamed(args:Array<String>, path:String, result:String) {
@@ -38,8 +38,8 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
-	
+
+
 	@:describe('Combined Alias')
 	@:variant(['-an', 'mypath', 'myname', 'myarg'], 'mypath', 'myname', 'run myarg')
 	@:variant(['-na', 'myname', 'mypath', 'myarg'], 'mypath', 'myname', 'run myarg')
@@ -53,7 +53,7 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
+
 	@:describe('Bool Flag')
 	public function testBool() {
 		var command = new FlagCommand();
@@ -64,7 +64,7 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
+
 	@:describe('Int Flag')
 	public function testInt() {
 		var command = new FlagCommand();
@@ -75,7 +75,7 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
+
 	@:describe('Float Flag')
 	public function testFloat() {
 		var command = new FlagCommand();
@@ -86,7 +86,7 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
+
 	@:describe('Int Array Flag')
 	public function testInts() {
 		var command = new FlagCommand();
@@ -97,7 +97,7 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
+
 	@:describe('Float Array Flag')
 	public function testFloats() {
 		var command = new FlagCommand();
@@ -108,7 +108,7 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
+
 	@:describe('String Array Flag')
 	public function testStrings() {
 		var command = new FlagCommand();
@@ -119,7 +119,7 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
+
 	@:describe('Custom Map')
 	public function testCustomMap() {
 		var command = new FlagCommand();
@@ -130,7 +130,7 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
+
 	@:describe('Multiple Flag Names')
 	@:variant('--multi1')
 	@:variant('--multi2')
@@ -144,7 +144,7 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
+
 	@:describe('Multiple Aliases')
 	@:variant('-x')
 	@:variant('-y')
@@ -158,9 +158,9 @@ class TestFlag {
 				return asserts.done();
 			});
 	}
-	
-	
-	
+
+
+
 	@:describe('No Alias')
 	public function testNoAlias() {
 		var command = new FlagCommand();
@@ -170,36 +170,36 @@ class TestFlag {
 }
 
 class FlagCommand extends DebugCommand {
-	
-	public var name:String = null;
-	
+
+	public var name:String;
+
 	@:flag('another-name')
-	public var path:String = null;
-	
+	public var path:String;
+
 	@:flag('multi1', 'multi2')
-	public var multi:String = null;
-	
+	public var multi:String;
+
 	@:alias('x', 'y', 'z')
-	public var multiAlias:String = null;
-	
+	public var multiAlias:String;
+
 	@:alias('b')
 	public var force:Bool = false;
-	
+
 	public var int:Int = 0;
 	public var float:Float = 0;
-	
+
 	@:alias('j')
-	public var ints:Array<Int> = null;
+	public var ints:Array<Int>;
 	@:alias('k')
-	public var floats:Array<Float> = null;
-	public var strings:Array<String> = null;
-	
+	public var floats:Array<Float>;
+	public var strings:Array<String>;
+
 	@:alias('o')
-	public var map:CustomMap = null;
+	public var map:CustomMap;
 
 	@:alias(false)
-	public var withoutalias:String = null;
-	
+	public var withoutalias:String;
+
 	@:defaultCommand
 	public function run(args:Rest<String>) {
 		debug = 'run ' + args.join(',');
@@ -217,10 +217,10 @@ abstract CustomMap(StringMap<Int>) from StringMap<Int> to StringMap<Int> {
 		}
 		return map;
 	}
-	
+
 	public function toString() {
 		var keys = [for(key in this.keys()) key];
 		keys.sort(Reflect.compare);
 		return [for(key in keys) '$key=>' + this.get(key)].join(',');
 	}
-} 
+}
